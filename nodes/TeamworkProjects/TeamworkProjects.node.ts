@@ -1,10 +1,13 @@
 import { IExecuteFunctions } from 'n8n-core';
 import {
+	ILoadOptionsFunctions,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
+import { getEndPointCategories, teamworkProjectsApiRequest } from './GenericFunctions';
+import { LoadedResource, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
 	description: INodeTypeDescription = {
@@ -32,10 +35,16 @@ export class TeamworkProjects implements INodeType {
 		],
 	};
 
-	// The function below is responsible for actually doing whatever this node
-	// is supposed to do. In this case, we're just appending the `myString` property
-	// with whatever the user has entered.
-	// You can make async calls and use `await`.
+	methods = {
+		loadOptions: {
+			async getUsers(this: ILoadOptionsFunctions) {
+				const groups = await getEndPointCategories();
+
+				return [{name:'',value:''}]//toOptions(users as LoadedResource[]);
+			},
+		},
+	};
+
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 
