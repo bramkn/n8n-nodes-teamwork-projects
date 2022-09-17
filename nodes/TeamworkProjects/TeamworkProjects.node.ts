@@ -13,6 +13,7 @@ export class TeamworkProjects implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Teamwork Projects',
 		name: 'teamworkProjects',
+		icon: 'file:teamworkprojects.svg',
 		group: ['transform'],
 		version: 1,
 		description: 'Teamwork Projects',
@@ -21,23 +22,31 @@ export class TeamworkProjects implements INodeType {
 		},
 		inputs: ['main'],
 		outputs: ['main'],
+		credentials: [
+			{
+				name: 'teamworkProjectsApi',
+				required: true,
+			},
+		],
 		properties: [
 			// Node properties which the user gets displayed and
 			// can change on the node.
 			{
-				displayName: 'My String',
-				name: 'myString',
-				type: 'string',
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
 				default: '',
-				placeholder: 'Placeholder value',
-				description: 'The description text',
+				typeOptions: {
+					loadOptionsMethod: 'getResources',
+				},
+				description: 'Teamwork Projects resource',
 			},
 		],
 	};
 
 	methods = {
 		loadOptions: {
-			async getUsers(this: ILoadOptionsFunctions) {
+			async getResources(this: ILoadOptionsFunctions) {
 				const groups = await getEndPointCategories();
 
 				return [{name:'',value:''}]//toOptions(users as LoadedResource[]);
