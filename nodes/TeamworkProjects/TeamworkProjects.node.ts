@@ -6,8 +6,8 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
-import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndPointOperations, teamworkProjectsApiRequest } from './GenericFunctions';
-import { LoadedResource, TeamworkProjectsApiCredentials } from './types';
+import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndPointOperations, getEndPoints, teamworkProjectsApiRequest } from './GenericFunctions';
+import { EndpointConfig, LoadedResource, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
 	description: INodeTypeDescription = {
@@ -78,9 +78,9 @@ export class TeamworkProjects implements INodeType {
 		const resource = await this.getNodeParameter('resource', 0, '') as string;
 		const operation = await this.getNodeParameter('operation', 0, '') as string;
 
-
-		const enpointConfig = await getEndpointConfig(resource,operation);
-		console.log(enpointConfig);
+		console.log(await getEndPoints());
+		const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
+		console.log(endpointConfig);
 		//getEndpointConfig
 
 		// Iterates over all input items and add the key "myString" with the
@@ -88,7 +88,9 @@ export class TeamworkProjects implements INodeType {
 		// (This could be a different value for each item in case it contains an expression)
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
+				if(endpointConfig.method === 'get'){
 
+				}
 
 			} catch (error) {
 				// This node should never fail but we want to showcase how

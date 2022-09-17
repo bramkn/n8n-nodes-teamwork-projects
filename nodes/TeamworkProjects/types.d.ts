@@ -15,3 +15,10 @@ export type FieldsUiValues = Array<{
 	fieldValue: string;
 }>;
 
+export type EndpointConfig = {
+	endpoint:string,
+	method:string,
+	parameters: Object[],
+	description:string,
+	group:string,
+}

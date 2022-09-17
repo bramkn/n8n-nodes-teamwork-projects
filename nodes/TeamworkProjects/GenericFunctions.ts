@@ -15,6 +15,7 @@ import {
 } from 'n8n-workflow';
 
 import {
+	EndpointConfig,
 	LoadedResource,
 	TeamworkProjectsApiCredentials,
 } from './types';
@@ -75,9 +76,13 @@ export async function getEndPointOperations(resource:string){
 }
 
 export async function getEndpointConfig(resource:string, operation:string){
-	return endpoints.filter(x=>x.group === resource && x.description === operation);
+	return endpoints.filter(x=>x.group === resource && x.description === operation)[0] as EndpointConfig;
 }
 
+export async function getEndPoints(){
+	return [...new Set(endpoints.map((item)=>item.endpoint))];
+
+}
 
 export const toOptions = (items: LoadedResource[]) =>
 	items.map(({ name, id }) => ({ name: name, value: id }));
