@@ -6,15 +6,15 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 
-export class ExampleNode implements INodeType {
+export class TeamworkProjects implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Example Node',
-		name: 'exampleNode',
+		displayName: 'Teamwork Projects',
+		name: 'teamworkProjects',
 		group: ['transform'],
 		version: 1,
-		description: 'Basic Example Node',
+		description: 'Teamwork Projects',
 		defaults: {
-			name: 'Example Node',
+			name: 'Teamwork Projects',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
