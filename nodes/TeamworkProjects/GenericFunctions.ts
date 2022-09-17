@@ -69,6 +69,11 @@ export async function getEndPointCategories(){
 
 }
 
+export async function getEndPointOperations(resource:string){
+	return [...new Set(endpoints.filter(x=>x.group === resource).map((item)=>item.description))];
+
+}
+
 
 export const toOptions = (items: LoadedResource[]) =>
 	items.map(({ name, id }) => ({ name: name, value: id }));

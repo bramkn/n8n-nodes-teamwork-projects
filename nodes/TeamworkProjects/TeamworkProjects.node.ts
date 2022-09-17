@@ -6,7 +6,7 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
-import { arrayToOptions, getEndPointCategories, teamworkProjectsApiRequest } from './GenericFunctions';
+import { arrayToOptions, getEndPointCategories, getEndPointOperations, teamworkProjectsApiRequest } from './GenericFunctions';
 import { LoadedResource, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
@@ -41,6 +41,17 @@ export class TeamworkProjects implements INodeType {
 				},
 				description: 'Teamwork Projects resource',
 			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				default: '',
+				typeOptions: {
+					loadOptionsDependsOn:['resource'],
+					loadOptionsMethod: 'getOperations',
+				},
+				description: 'Operation to perform',
+			},
 		],
 	};
 
@@ -50,6 +61,12 @@ export class TeamworkProjects implements INodeType {
 				const resources = await getEndPointCategories();
 
 				return arrayToOptions(resources as string[]);
+			},
+			async getOperations(this: ILoadOptionsFunctions) {
+				const resource = this.getNodeParameter('resource', 0) as string;
+				const operations = await getEndPointOperations(resource);
+
+				return arrayToOptions(operations as string[]);
 			},
 		},
 	};
