@@ -65,10 +65,13 @@ export async function teamworkProjectsApiRequest(
 
 
 export async function getEndPointCategories(){
-	console.log(endpoints.map((item)=>item.group));
+	return [...new Set(endpoints.map((item)=>item.group))];
 
 }
 
 
 export const toOptions = (items: LoadedResource[]) =>
 	items.map(({ name, id }) => ({ name: name, value: id }));
+
+export const arrayToOptions = (items: string[]) =>
+	items.map((name) => ({ name: name, value: name.toLowerCase() }));
