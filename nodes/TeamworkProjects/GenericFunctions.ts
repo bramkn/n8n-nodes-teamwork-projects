@@ -79,4 +79,4 @@ export const toOptions = (items: LoadedResource[]) =>
 	items.map(({ name, id }) => ({ name: name, value: id }));
 
 export const arrayToOptions = (items: string[]) =>
-	items.map((name) => ({ name: name, value: name.toLowerCase() }));
+	items.map((name) => ({ name: name, value: name }));
