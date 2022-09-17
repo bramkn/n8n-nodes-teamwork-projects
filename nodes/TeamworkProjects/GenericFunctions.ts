@@ -42,7 +42,7 @@ export async function teamworkProjectsApiRequest(
 		auth: {
 			user: credentials.apiToken,
 		},
-		uri: `${credentials.host}/${endpoint}.json`,
+		uri: `${credentials.host}/${endpoint}`,
 		json: true,
 		gzip: true,
 		rejectUnauthorized: true,
@@ -70,8 +70,12 @@ export async function getEndPointCategories(){
 }
 
 export async function getEndPointOperations(resource:string){
-	return [...new Set(endpoints.filter(x=>x.group === resource).map((item)=>item.description))];
+	return endpoints.filter(x=>x.group === resource).map((item)=>item.description);
 
+}
+
+export async function getEndpointConfig(resource:string, operation:string){
+	return endpoints.filter(x=>x.group === resource && x.description === operation);
 }
 
 

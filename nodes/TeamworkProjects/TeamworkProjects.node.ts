@@ -6,7 +6,7 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
-import { arrayToOptions, getEndPointCategories, getEndPointOperations, teamworkProjectsApiRequest } from './GenericFunctions';
+import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndPointOperations, teamworkProjectsApiRequest } from './GenericFunctions';
 import { LoadedResource, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
@@ -73,19 +73,23 @@ export class TeamworkProjects implements INodeType {
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-
 		let item: INodeExecutionData;
-		let myString: string;
+
+		const resource = await this.getNodeParameter('resource', 0, '') as string;
+		const operation = await this.getNodeParameter('operation', 0, '') as string;
+
+
+		const enpointConfig = await getEndpointConfig(resource,operation);
+		console.log(enpointConfig);
+		//getEndpointConfig
 
 		// Iterates over all input items and add the key "myString" with the
 		// value the parameter "myString" resolves to.
 		// (This could be a different value for each item in case it contains an expression)
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
-				myString = this.getNodeParameter('myString', itemIndex, '') as string;
-				item = items[itemIndex];
 
-				item.json['myString'] = myString;
+
 			} catch (error) {
 				// This node should never fail but we want to showcase how
 				// to handle errors.
