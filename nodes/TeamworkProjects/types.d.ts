@@ -18,7 +18,18 @@ export type FieldsUiValues = Array<{
 export type EndpointConfig = {
 	endpoint:string,
 	method:string,
-	parameters: Object[],
+	parameters: EndpointParameters[],
 	description:string,
 	group:string,
+}
+
+export type EndpointParameters = {
+	in:string,
+	name:string,
+	required?:boolean,
+	schema?:Object,
+	type:string,
+	description?:string,
+	enum?:string[],
+	items?:Object,
 }

@@ -33,7 +33,7 @@ export async function teamworkProjectsApiRequest(
 	body: IDataObject = {},
 	qs: IDataObject = {},
 ) {
-	const credentials = await this.getCredentials('teamworkProjects') as TeamworkProjectsApiCredentials;
+	const credentials = await this.getCredentials('teamworkProjectsApi') as TeamworkProjectsApiCredentials;
 	const options: OptionsWithUri = {
 		headers: {
 		},
@@ -43,7 +43,7 @@ export async function teamworkProjectsApiRequest(
 		auth: {
 			user: credentials.apiToken,
 		},
-		uri: `${credentials.host}/${endpoint}`,
+		uri: `${credentials.host}${endpoint}`,
 		json: true,
 		gzip: true,
 		rejectUnauthorized: true,
@@ -63,6 +63,39 @@ export async function teamworkProjectsApiRequest(
 		throw new NodeApiError(this.getNode(), error);
 	}
 }
+
+export async function teamworkApiGetRequest(
+	this: IExecuteFunctions | ILoadOptionsFunctions,
+	endpoint:string){
+
+	const qs:IDataObject ={
+	};
+	const returnItems: INodeExecutionData[] = [];
+
+	qs['page'] = 1;
+	qs['pageSize'] = 100;
+
+	let dataArray;
+
+	do{
+		const data = await teamworkProjectsApiRequest.call(this,'Get', endpoint, {}, qs);
+
+		qs['page'] += 1;
+
+		dataArray = [].concat(data[`${Object. keys(data)[0]}`]);
+
+		for (let dataIndex = 0; dataIndex < dataArray.length; dataIndex++) {
+			const newItem: INodeExecutionData = {
+				json: {},
+				binary: {},
+			};
+			newItem.json = dataArray[dataIndex];
+			returnItems.push(newItem);
+		}
+	} while (dataArray.length==qs['per_page']);
+	return returnItems;
+}
+
 
 
 export async function getEndPointCategories(){
