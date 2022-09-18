@@ -50,7 +50,6 @@ export async function teamworkProjectsApiRequest(
 		gzip: true,
 		rejectUnauthorized: true,
 	};
-	console.log(options.uri);
 
 	if (Object.keys(qs).length === 0) {
 		delete options.qs;
