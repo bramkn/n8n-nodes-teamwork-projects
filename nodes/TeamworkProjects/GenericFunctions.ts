@@ -15,7 +15,9 @@ import {
 } from 'n8n-workflow';
 
 import {
+	BasicFilter,
 	EndpointConfig,
+	EndpointParameter,
 	LoadedResource,
 	TeamworkProjectsApiCredentials,
 } from './types';
@@ -66,10 +68,9 @@ export async function teamworkProjectsApiRequest(
 
 export async function teamworkApiGetRequest(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
-	endpoint:string){
+	endpoint:string,
+	qs:IDataObject ={}){
 
-	const qs:IDataObject ={
-	};
 	const returnItems: INodeExecutionData[] = [];
 
 	qs['page'] = 1;
@@ -92,7 +93,7 @@ export async function teamworkApiGetRequest(
 			newItem.json = dataArray[dataIndex];
 			returnItems.push(newItem);
 		}
-	} while (dataArray.length==qs['per_page']);
+	} while (dataArray.length===qs['pageSize']);
 	return returnItems;
 }
 
@@ -109,12 +110,32 @@ export async function getEndPointOperations(resource:string){
 }
 
 export async function getEndpointConfig(resource:string, operation:string){
-	return endpoints.filter(x=>x.group === resource && x.description === operation)[0] as EndpointConfig;
+	return endpoints.find(x=>x.group === resource && x.description === operation) as EndpointConfig;
+}
+
+export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
+	return endpointConfig.parameters.filter(x=> x.in ==='query' && x.name !=='page' && x.name !=='pageSize'&& x.name !=='orderMode'&& x.name !=='orderBy').map((item)=>item.name) as string[];
 }
 
 export async function getEndPoints(){
 	return [...new Set(endpoints.map((item)=>item.endpoint))];
 
+}
+
+export async function getQueryFilters(
+	this: IExecuteFunctions | ILoadOptionsFunctions,
+	parameters:EndpointParameter[],
+	itemIndex:number
+){
+	const qs:IDataObject = {};
+	const filters = await this.getNodeParameter('parameters.basicFilter', itemIndex, []) as BasicFilter[];
+	for(var index = 0; index<filters.length; index++){
+		const filterConfig = parameters.find(x => x.name === filters[index].field);
+		if(filterConfig?.type ==='string'){
+			qs[filters[index].field] = filters[index].value;
+		}
+	}
+	return qs
 }
 
 export const toOptions = (items: LoadedResource[]) =>

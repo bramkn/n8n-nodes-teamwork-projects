@@ -18,12 +18,12 @@ export type FieldsUiValues = Array<{
 export type EndpointConfig = {
 	endpoint:string,
 	method:string,
-	parameters: EndpointParameters[],
+	parameters: EndpointParameter[],
 	description:string,
 	group:string,
 }
 
-export type EndpointParameters = {
+export type EndpointParameter = {
 	in:string,
 	name:string,
 	required?:boolean,
@@ -33,3 +33,8 @@ export type EndpointParameters = {
 	enum?:string[],
 	items?:Object,
 }
+
+export type BasicFilter = {
+	field: string;
+	value: string;
+};

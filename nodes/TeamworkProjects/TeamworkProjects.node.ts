@@ -6,8 +6,9 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
-import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndPointOperations, getEndPoints, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
-import { EndpointConfig, EndpointParameters, LoadedResource, TeamworkProjectsApiCredentials } from './types';
+import { filterOptions } from './FilterDescription';
+import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
+import { EndpointConfig, EndpointParameter, LoadedResource, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
 	description: INodeTypeDescription = {
@@ -59,6 +60,7 @@ export class TeamworkProjects implements INodeType {
 				default: '',
 				description: 'When performing an operation on a specific record, this Id needs to be entered with the Id for the record of that resource',
 			},
+			...filterOptions,
 		],
 	};
 
@@ -75,6 +77,14 @@ export class TeamworkProjects implements INodeType {
 
 				return arrayToOptions(operations as string[]);
 			},
+			async getFilterFields(this: ILoadOptionsFunctions) {
+				const resource = this.getNodeParameter('resource', 0) as string;
+				const operation = this.getNodeParameter('operation', 0) as string;
+				const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
+				const filters = await getEndpointFilterOptions(endpointConfig);
+
+				return arrayToOptions(filters as string[]);
+			},
 		},
 	};
 
@@ -88,7 +98,7 @@ export class TeamworkProjects implements INodeType {
 
 		const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
 		let endpoint = endpointConfig.endpoint;
-		let endpointId = endpointConfig.parameters.filter(x => x.in ==='path')[0]?.name as string ?? '';
+		let endpointId = endpointConfig.parameters.find(x => x.in ==='path')?.name as string ?? '';
 		console.log(endpoint + ' - ' + endpointId);
 		//getEndpointConfig
 
@@ -112,7 +122,8 @@ export class TeamworkProjects implements INodeType {
 					}
 				}
 				if(endpointConfig.method === 'get'){
-					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint) as INodeExecutionData[];
+					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
+					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
 						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {
 							returnItems.push(getResult[dataIndex]);
 						}
