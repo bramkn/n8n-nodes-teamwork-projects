@@ -126,19 +126,19 @@ export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
 
 export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 	const bodyFields = endpointConfig.parameters.filter(x=> x.in ==='body');
-	const array =[];
+	const array:optionsFromConfig[] =[];
 	for(var index =0; index < bodyFields.length; index++){
 		const field = bodyFields[index];
 		if(field.schema !== undefined){
 			const schema = field.schema as configSchema;
 			const fieldDef = await getDefinitionPropertiesFromEndpoint(schema.$ref);
 			if(fieldDef !== undefined){
-				const properties = await getDefinitionArray(fieldDef?.properties);
+				const properties:optionsFromConfig[] = (await getDefinitionArray(fieldDef?.properties)).map((item)=>({"name":item.fieldName,"value":item.fieldName}));
 
-				array.push.apply((properties.map((item)=>({"name":item.fieldName,"value":item.fieldName}))));
+				array.push.apply(array,properties);
 			}
 		}else{
-			array.push({"name":field.description ?? field.name,"value":field.name,"description":field.enum ? "<p> possible options: " + field.enum + "<p>":null})
+			array.push({"name":field.description ?? field.name,"value":field.name,"description":field.enum ? "<p> possible options: " + field.enum + "<p>":undefined})
 		}
 
 	}
