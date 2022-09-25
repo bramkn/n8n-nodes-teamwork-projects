@@ -135,14 +135,14 @@ export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 			if(fieldDef !== undefined){
 				const properties = await getDefinitionArray(fieldDef?.properties);
 
-				array.push(properties.map((item)=>({"name":item.fieldName,"value":item.fieldName})))
+				array.push.apply((properties.map((item)=>({"name":item.fieldName,"value":item.fieldName}))));
 			}
 		}else{
 			array.push({"name":field.description ?? field.name,"value":field.name,"description":field.enum ? "<p> possible options: " + field.enum + "<p>":null})
 		}
 
 	}
-	console.log({array});
+	console.log(JSON.stringify(array));
 	return array;
 }
 
