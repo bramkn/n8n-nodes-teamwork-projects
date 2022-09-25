@@ -6,6 +6,7 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
+import { fieldOptions } from './FieldDescription';
 import { filterOptions } from './FilterDescription';
 import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
 import { EndpointConfig, EndpointParameter, LoadedResource, optionsFromConfig, TeamworkProjectsApiCredentials } from './types';
@@ -61,6 +62,7 @@ export class TeamworkProjects implements INodeType {
 				description: 'When performing an operation on a specific record, this Id needs to be entered with the Id for the record of that resource',
 			},
 			...filterOptions,
+			...fieldOptions,
 		],
 	};
 
