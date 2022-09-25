@@ -139,33 +139,14 @@ export class TeamworkProjects implements INodeType {
 							returnItems.push(getResult[dataIndex]);
 						}
 				}
-				if(endpointConfig.method === 'post'){
+				if(endpointConfig.method === 'post' || endpointConfig.method === 'patch' || endpointConfig.method === 'put'){
 					const body = await getBody.call(this,endpointConfig,itemIndex);
-					console.log(body);
-					const getResult = await teamworkApiRequest.call(this,endpoint, 'post', body, {});
+					const getResult = await teamworkApiRequest.call(this,endpoint, endpointConfig.method, body, {});
 					returnItems.push(getResult);
-
-				}
-				if(endpointConfig.method === 'patch'){
-					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
-					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
-						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {
-							returnItems.push(getResult[dataIndex]);
-						}
-				}
-				if(endpointConfig.method === 'put'){
-					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
-					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
-						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {
-							returnItems.push(getResult[dataIndex]);
-						}
 				}
 				if(endpointConfig.method === 'delete'){
-					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
-					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
-						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {
-							returnItems.push(getResult[dataIndex]);
-						}
+					const getResult = await teamworkApiRequest.call(this,endpoint, endpointConfig.method, {}, {});
+					returnItems.push(getResult);
 				}
 
 			} catch (error) {
