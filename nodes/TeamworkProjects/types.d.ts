@@ -59,7 +59,14 @@ export type BasicFilter = {
 	value: string;
 };
 
+
 export type BasicField = {
 	field: string;
+	value: string;
+};
+
+export type CustomField = {
+	field: string;
+	type: string
 	value: string;
 };

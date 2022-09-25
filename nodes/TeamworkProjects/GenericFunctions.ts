@@ -17,6 +17,7 @@ import {
 import {
 	ArrayItemsObject,
 	BasicField,
+	CustomField,
 	BasicFilter,
 	configSchema,
 	EndpointConfig,
@@ -247,6 +248,34 @@ export async function getBody(
 		}
 		set(body,field.field,fieldValue);
 		//body[field.field] = field.value;
+	}
+	return body;
+
+}
+
+export async function getCustomBody(
+	this: IExecuteFunctions | ILoadOptionsFunctions,
+	object:string,
+	itemIndex:number
+){
+	const body:IDataObject = {};
+	const fields = await this.getNodeParameter('customFields.basicFields', itemIndex, []) as CustomField[];
+	for(var index = 0;index<fields.length;index++){
+		const field = fields[index];
+		const fieldType = field.type;
+
+		let fieldValue;
+		if(fieldType === 'boolean'){
+			fieldValue = field.value.toLocaleLowerCase() ==='true';
+		}
+		else if(fieldType === 'integer'){
+			fieldValue = +field.value;
+		}
+		else{
+			fieldValue = field.value
+		}
+		set(body,object+'.'+field.field,fieldValue);
+
 	}
 	return body;
 

@@ -16,6 +16,11 @@ export const fieldOptions: INodeProperties[] =  [
 		},
 		description: 'Field to add',
 		default: {},
+		displayOptions:{
+			hide:{
+				resource:['v1ApiCustom']
+			}
+		},
 		options: [
 			{
 				name: 'basicFields',

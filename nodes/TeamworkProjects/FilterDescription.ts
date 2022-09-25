@@ -16,6 +16,11 @@ export const filterOptions: INodeProperties[] =  [
 		},
 		description: 'Filter paramaters to apply',
 		default: {},
+		displayOptions:{
+			hide:{
+				resource:['v1ApiCustom']
+			}
+		},
 		options: [
 			{
 				name: 'basicFilter',
