@@ -19,6 +19,7 @@ import {
 	EndpointConfig,
 	EndpointParameter,
 	LoadedResource,
+	optionsFromConfig,
 	TeamworkProjectsApiCredentials,
 } from './types';
 import { listenerCount } from 'process';
@@ -113,7 +114,12 @@ export async function getEndpointConfig(resource:string, operation:string){
 }
 
 export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
-	return endpointConfig.parameters.filter(x=> x.in ==='query' && x.name !=='page' && x.name !=='pageSize'&& x.name !=='orderMode'&& x.name !=='orderBy').map((item)=>item.name) as string[];
+	return endpointConfig.parameters.filter(
+		x=> x.in ==='query'
+	&& x.name !=='page'
+	&& x.name !=='pageSize'
+	&& x.name !=='orderMode'
+	&& x.name !=='orderBy').map((item)=>({"name":item.name,"value":item.name,"description":`${item.type}`})) as optionsFromConfig[];
 }
 
 export async function getEndPoints(){

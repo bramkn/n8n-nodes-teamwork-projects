@@ -83,7 +83,7 @@ export class TeamworkProjects implements INodeType {
 				const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
 				const filters = await getEndpointFilterOptions(endpointConfig);
 
-				return arrayToOptions(filters as string[]);
+				return filters;
 			},
 		},
 	};

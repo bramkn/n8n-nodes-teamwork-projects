@@ -8,6 +8,11 @@ export type LoadedResource = {
 	id: number;
 	name: string;
 }
+export type optionsFromConfig ={
+	name:string,
+	value:string,
+	description?:string
+}
 
 
 export type FieldsUiValues = Array<{
