@@ -1,5 +1,6 @@
 import { IExecuteFunctions } from 'n8n-core';
 import {
+	IDataObject,
 	ILoadOptionsFunctions,
 	INodeExecutionData,
 	INodeType,
@@ -8,7 +9,7 @@ import {
 } from 'n8n-workflow';
 import { fieldOptions } from './FieldDescription';
 import { filterOptions } from './FilterDescription';
-import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
+import { arrayToOptions, getBody, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
 import { EndpointConfig, EndpointParameter, LoadedResource, optionsFromConfig, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
@@ -132,6 +133,32 @@ export class TeamworkProjects implements INodeType {
 					}
 				}
 				if(endpointConfig.method === 'get'){
+					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
+					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
+						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {
+							returnItems.push(getResult[dataIndex]);
+						}
+				}
+				if(endpointConfig.method === 'post'){
+					const body = await getBody.call(this,endpointConfig,itemIndex);
+					console.log(body);
+
+				}
+				if(endpointConfig.method === 'patch'){
+					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
+					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
+						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {
+							returnItems.push(getResult[dataIndex]);
+						}
+				}
+				if(endpointConfig.method === 'put'){
+					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
+					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
+						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {
+							returnItems.push(getResult[dataIndex]);
+						}
+				}
+				if(endpointConfig.method === 'delete'){
 					const qs = await getQueryFilters.call(this,endpointConfig.parameters,itemIndex);
 					const getResult:INodeExecutionData[] = await teamworkApiGetRequest.call(this,endpoint,qs) as INodeExecutionData[];
 						for (let dataIndex = 0; dataIndex < getResult.length; dataIndex++) {

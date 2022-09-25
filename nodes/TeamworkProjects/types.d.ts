@@ -18,6 +18,10 @@ export type configSchema ={
 	$ref:string
 }
 
+export type ArrayItemsObject = {
+	type:string
+}
+
 export type Property = {
 	fieldName:string,
 	isArray:boolean,
@@ -51,6 +55,11 @@ export type EndpointParameter = {
 }
 
 export type BasicFilter = {
+	field: string;
+	value: string;
+};
+
+export type BasicField = {
 	field: string;
 	value: string;
 };

@@ -15,6 +15,8 @@ import {
 } from 'n8n-workflow';
 
 import {
+	ArrayItemsObject,
+	BasicField,
 	BasicFilter,
 	configSchema,
 	EndpointConfig,
@@ -134,7 +136,6 @@ export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 			const fieldDef = await getDefinitionPropertiesFromEndpoint(schema.$ref);
 			if(fieldDef !== undefined){
 				const properties:optionsFromConfig[] = (await getDefinitionArray(fieldDef?.properties)).map((item)=>({"name":item.fieldName,"value":item.fieldName}));
-
 				array.push.apply(array,properties);
 			}
 		}else{
@@ -142,7 +143,42 @@ export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 		}
 
 	}
-	console.log(JSON.stringify(array));
+	return array;
+}
+
+export async function getEndpointFieldProperties(endpointConfig:EndpointConfig){
+	const bodyFields = endpointConfig.parameters.filter(x=> x.in ==='body');
+	const array:Property[] =[];
+	for(var index =0; index < bodyFields.length; index++){
+		const field = bodyFields[index];
+		if(field.schema !== undefined){
+			const schema = field.schema as configSchema;
+			const fieldDef = await getDefinitionPropertiesFromEndpoint(schema.$ref);
+			if(fieldDef !== undefined){
+				const properties:Property[] = (await getDefinitionArray(fieldDef?.properties));
+				array.push.apply(array,properties);
+			}
+		}else{
+			let fieldType;
+			if(field.type === 'array' && field.items && field.items){
+				const items:ArrayItemsObject = field.items as ArrayItemsObject;
+				fieldType = items.type;
+			}
+			else{
+				fieldType = field.type
+			}
+
+			array.push(
+			  {
+					"fieldName": field.name,
+					"isArray": field.type === 'array',
+					"objectDef": "",
+					"fieldType": fieldType
+				}
+			)
+		}
+
+	}
 	return array;
 }
 
@@ -160,12 +196,34 @@ export async function getQueryFilters(
 	const filters = await this.getNodeParameter('parameters.basicFilter', itemIndex, []) as BasicFilter[];
 	for(var index = 0; index<filters.length; index++){
 		const filterConfig = parameters.find(x => x.name === filters[index].field);
-		if(filterConfig?.type ==='string'){
+		if(filterConfig?.type ==='boolean'){
+			qs[filters[index].field] = filters[index].value.toLocaleLowerCase() === 'true';
+		}
+		else {
 			qs[filters[index].field] = filters[index].value;
 		}
 	}
 	return qs
 }
+
+export async function getBody(
+	this: IExecuteFunctions | ILoadOptionsFunctions,
+	endpointConfig:EndpointConfig,
+	itemIndex:number
+){
+	const fieldProperties = await getEndpointFieldProperties(endpointConfig);
+	const body:IDataObject = {};
+	const fields = await this.getNodeParameter('fields.basicFields', itemIndex, []) as BasicField[];
+	for(var index = 0;index<fields.length;index++){
+		const field = fields[index];
+		const fieldType = fieldProperties.find(x=>x.fieldName===field.field);
+		body[field.field] = field.value;
+	}
+	console.log(body);
+
+}
+
+
 export async function getDefinitionArray(properties:Property[]){
 	const array:Property[] = [];
 	if(properties !== undefined){
