@@ -146,7 +146,7 @@ export class TeamworkProjects implements INodeType {
 				}
 				if(endpointConfig.method === 'delete'){
 					const getResult = await teamworkApiRequest.call(this,endpoint, endpointConfig.method, {}, {});
-					returnItems.push(getResult);
+					returnItems.push({json:{result:'OK'}});
 				}
 
 			} catch (error) {
