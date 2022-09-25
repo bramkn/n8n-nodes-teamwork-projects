@@ -262,7 +262,19 @@ export async function getDefinitionArray(properties:Property[]){
 				array.push(property);
 			}
 			else{
-				array.push.apply(array,await getDefinitionArray(await getDefinitionPropertiesFromDef(property.objectDef,property.fieldName)));
+				const propertyDef = await getDefinitionPropertiesFromDef(property.objectDef,property.fieldName);
+				if(propertyDef){
+					array.push.apply(array,await getDefinitionArray(propertyDef));
+				}
+				else{
+					array.push.apply(array,[{
+						"fieldName": property.fieldName,
+						"isArray":false,
+						"objectDef":"",
+						"fieldType":"string"
+					}])
+				}
+
 			}
 		}
 	}
