@@ -9,7 +9,7 @@ import {
 } from 'n8n-workflow';
 import { fieldOptions } from './FieldDescription';
 import { filterOptions } from './FilterDescription';
-import { arrayToOptions, getBody, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
+import { arrayToOptions, getBody, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkApiRequest, teamworkProjectsApiRequest } from './GenericFunctions';
 import { EndpointConfig, EndpointParameter, LoadedResource, optionsFromConfig, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
@@ -142,6 +142,8 @@ export class TeamworkProjects implements INodeType {
 				if(endpointConfig.method === 'post'){
 					const body = await getBody.call(this,endpointConfig,itemIndex);
 					console.log(body);
+					const getResult = await teamworkApiRequest.call(this,endpoint, 'post', body, {});
+					returnItems.push(getResult);
 
 				}
 				if(endpointConfig.method === 'patch'){

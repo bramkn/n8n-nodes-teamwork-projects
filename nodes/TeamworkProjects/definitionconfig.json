@@ -3025,8 +3025,8 @@
 			{
 				"fieldName": "date",
 				"isArray": false,
-				"objectDef": "#/definitions/payload.Date",
-				"fieldType": "object"
+				"objectDef": "",
+				"fieldType": "string"
 			},
 			{ "fieldName": "description", "isArray": false, "objectDef": "", "fieldType": "string" },
 			{ "fieldName": "hasStartTime", "isArray": false, "objectDef": "", "fieldType": "boolean" },

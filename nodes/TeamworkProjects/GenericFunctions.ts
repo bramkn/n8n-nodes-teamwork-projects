@@ -27,7 +27,7 @@ import {
 	TeamworkProjectsApiCredentials,
 } from './types';
 import { listenerCount } from 'process';
-
+import { get, pick , set, unset } from 'lodash';
 import defintions from "./definitionconfig.json";
 import endpoints from "./endpointconfig.json";
 
@@ -101,6 +101,24 @@ export async function teamworkApiGetRequest(
 	return returnItems;
 }
 
+export async function teamworkApiRequest(
+	this: IExecuteFunctions | ILoadOptionsFunctions,
+	endpoint:string,
+	method:string,
+	body:IDataObject ={},
+	qs:IDataObject ={},
+	){
+
+	const data = await teamworkProjectsApiRequest.call(this, method, endpoint, body, qs);
+
+	const newItem: INodeExecutionData = {
+		json: {},
+		binary: {},
+	};
+	newItem.json = data;
+
+	return newItem;
+}
 
 
 export async function getEndPointCategories(){
@@ -216,10 +234,21 @@ export async function getBody(
 	const fields = await this.getNodeParameter('fields.basicFields', itemIndex, []) as BasicField[];
 	for(var index = 0;index<fields.length;index++){
 		const field = fields[index];
-		const fieldType = fieldProperties.find(x=>x.fieldName===field.field);
-		body[field.field] = field.value;
+		const fieldType = fieldProperties.find(x=>x.fieldName===field.field)?.fieldType ?? 'string';
+		let fieldValue;
+		if(fieldType === 'boolean'){
+			fieldValue = field.value.toLocaleLowerCase() ==='true';
+		}
+		else if(fieldType === 'integer'){
+			fieldValue = +field.value;
+		}
+		else{
+			fieldValue = field.value
+		}
+		set(body,field.field,fieldValue);
+		//body[field.field] = field.value;
 	}
-	console.log(body);
+	return body;
 
 }
 
