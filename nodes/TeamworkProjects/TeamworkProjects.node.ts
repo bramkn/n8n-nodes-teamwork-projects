@@ -110,7 +110,6 @@ export class TeamworkProjects implements INodeType {
 		const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
 		let endpoint = endpointConfig.endpoint;
 		let endpointId = endpointConfig.parameters.find(x => x.in ==='path')?.name as string ?? '';
-		console.log(endpoint + ' - ' + endpointId);
 		//getEndpointConfig
 
 		// Iterates over all input items and add the key "myString" with the
