@@ -16,10 +16,12 @@ import {
 
 import {
 	BasicFilter,
+	configSchema,
 	EndpointConfig,
 	EndpointParameter,
 	LoadedResource,
 	optionsFromConfig,
+	Property,
 	TeamworkProjectsApiCredentials,
 } from './types';
 import { listenerCount } from 'process';
@@ -123,8 +125,23 @@ export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
 }
 
 export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
-	return endpointConfig.parameters.filter(
-		x=> x.in ==='body').map((item)=>({"name":item.description ?? item.name,"value":item.name,"description":item.enum ? "<p> possible options: " + item.enum + "<p>":null})) as optionsFromConfig[];
+	const bodyFields = endpointConfig.parameters.filter(x=> x.in ==='body');
+	const array =[];
+	for(var index =0; index < bodyFields.length; index++){
+		const field = bodyFields[index];
+		if(field.schema !== undefined){
+			const schema = field.schema as configSchema;
+			const fieldDef = await getDefinitionPropertiesFromEndpoint(schema.$ref);
+			if(fieldDef !== undefined){
+				const properties = await getDefinitionArray(fieldDef?.properties);
+				array.push(properties)
+			}
+		}else{
+			array.push({"name":field.description ?? field.name,"value":field.name,"description":field.enum ? "<p> possible options: " + field.enum + "<p>":null})
+		}
+
+	}
+	return array;
 }
 
 export async function getEndPoints(){
@@ -146,6 +163,41 @@ export async function getQueryFilters(
 		}
 	}
 	return qs
+}
+export async function getDefinitionArray(properties:Property[]){
+	const array:Property[] = [];
+	for(var index= 0; index < properties.length; index++){
+		const property = properties[index];
+		if(property.objectDef===""){
+			array.push(property);
+		}
+		else{
+			array.push.apply(array,await getDefinitionArray(await getDefinitionPropertiesFromDef(property.objectDef,property.fieldName)));
+		}
+	}
+	return array as Property[];
+}
+
+export async function getDefinitionPropertiesFromDef(
+	defObject:string,
+	defObjectName:string
+){
+	const defName = defObject.split('/')[defObject.split('/').length-1];
+	const definition = defintions.find(x=>x.name===defName);
+	return definition?.properties.map((item)=>({
+		"fieldName":defObjectName+'.'+item.fieldName,
+		"isArray":item.isArray,
+		"objectDef":item.objectDef,
+		"fieldType":item.fieldType
+	})) as Property[];
+}
+
+export async function getDefinitionPropertiesFromEndpoint(
+	defObject:string
+){
+	const defName = defObject.split('/')[defObject.split('/').length-1];
+	const definition = defintions.find(x=>x.name===defName);
+	return definition;
 }
 
 export const toOptions = (items: LoadedResource[]) =>

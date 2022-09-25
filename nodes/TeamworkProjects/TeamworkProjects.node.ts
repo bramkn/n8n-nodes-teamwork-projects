@@ -8,7 +8,7 @@ import {
 } from 'n8n-workflow';
 import { filterOptions } from './FilterDescription';
 import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
-import { EndpointConfig, EndpointParameter, LoadedResource, TeamworkProjectsApiCredentials } from './types';
+import { EndpointConfig, EndpointParameter, LoadedResource, optionsFromConfig, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
 	description: INodeTypeDescription = {
@@ -91,7 +91,7 @@ export class TeamworkProjects implements INodeType {
 				const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
 				const fields = await getEndpointFieldOptions(endpointConfig);
 
-				return fields;
+				return fields as optionsFromConfig[];
 			},
 		},
 	};

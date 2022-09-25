@@ -14,6 +14,17 @@ export type optionsFromConfig ={
 	description?:string
 }
 
+export type configSchema ={
+	$ref:string
+}
+
+export type Property = {
+	fieldName:string,
+	isArray:boolean,
+	objectDef:string,
+	fieldType:string,
+}
+
 
 export type FieldsUiValues = Array<{
 	fieldId: string;
