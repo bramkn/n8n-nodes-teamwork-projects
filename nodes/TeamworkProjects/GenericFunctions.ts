@@ -119,7 +119,7 @@ export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
 	&& x.name !=='page'
 	&& x.name !=='pageSize'
 	&& x.name !=='orderMode'
-	&& x.name !=='orderBy').map((item)=>({"name":item.name,"value":item.name,"description":`<p>${item.type} ${item.enum ? " possible options:" + item.enum :''}<p>`})) as optionsFromConfig[];
+	&& x.name !=='orderBy').map((item)=>({"name":item.name,"value":item.name,"description":item.enum ? "<p>${item.type} possible options:" + item.enum + "<p>":null})) as optionsFromConfig[];
 }
 
 export async function getEndPoints(){
