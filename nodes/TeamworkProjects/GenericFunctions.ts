@@ -122,6 +122,11 @@ export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
 	&& x.name !=='orderBy').map((item)=>({"name":item.description ?? item.name,"value":item.name,"description":item.enum ? "<p> possible options: " + item.enum + "<p>":null})) as optionsFromConfig[];
 }
 
+export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
+	return endpointConfig.parameters.filter(
+		x=> x.in ==='body').map((item)=>({"name":item.description ?? item.name,"value":item.name,"description":item.enum ? "<p> possible options: " + item.enum + "<p>":null})) as optionsFromConfig[];
+}
+
 export async function getEndPoints(){
 	return [...new Set(endpoints.map((item)=>item.endpoint))];
 

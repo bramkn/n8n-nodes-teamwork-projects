@@ -7,7 +7,7 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 import { filterOptions } from './FilterDescription';
-import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
+import { arrayToOptions, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkProjectsApiRequest } from './GenericFunctions';
 import { EndpointConfig, EndpointParameter, LoadedResource, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
@@ -84,6 +84,14 @@ export class TeamworkProjects implements INodeType {
 				const filters = await getEndpointFilterOptions(endpointConfig);
 
 				return filters;
+			},
+			async getFields(this: ILoadOptionsFunctions) {
+				const resource = this.getNodeParameter('resource', 0) as string;
+				const operation = this.getNodeParameter('operation', 0) as string;
+				const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
+				const fields = await getEndpointFieldOptions(endpointConfig);
+
+				return fields;
 			},
 		},
 	};
