@@ -134,13 +134,15 @@ export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 			const fieldDef = await getDefinitionPropertiesFromEndpoint(schema.$ref);
 			if(fieldDef !== undefined){
 				const properties = await getDefinitionArray(fieldDef?.properties);
-				array.push(properties)
+
+				array.push(properties.map((item)=>({"name":item.fieldName,"value":item.fieldName})))
 			}
 		}else{
 			array.push({"name":field.description ?? field.name,"value":field.name,"description":field.enum ? "<p> possible options: " + field.enum + "<p>":null})
 		}
 
 	}
+	console.log({array});
 	return array;
 }
 
@@ -166,13 +168,15 @@ export async function getQueryFilters(
 }
 export async function getDefinitionArray(properties:Property[]){
 	const array:Property[] = [];
-	for(var index= 0; index < properties.length; index++){
-		const property = properties[index];
-		if(property.objectDef===""){
-			array.push(property);
-		}
-		else{
-			array.push.apply(array,await getDefinitionArray(await getDefinitionPropertiesFromDef(property.objectDef,property.fieldName)));
+	if(properties !== undefined){
+		for(var index= 0; index < properties.length; index++){
+			const property = properties[index];
+			if(property.objectDef===""){
+				array.push(property);
+			}
+			else{
+				array.push.apply(array,await getDefinitionArray(await getDefinitionPropertiesFromDef(property.objectDef,property.fieldName)));
+			}
 		}
 	}
 	return array as Property[];
