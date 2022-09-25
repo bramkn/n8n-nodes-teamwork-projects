@@ -22,7 +22,7 @@ export const filterOptions: INodeProperties[] =  [
 				displayName: 'Basic Filter',
 				values: [
 					{
-						displayName: 'Field Name or ID',
+						displayName: 'Filter',
 						name: 'field',
 						type: 'options',
 						typeOptions: {
