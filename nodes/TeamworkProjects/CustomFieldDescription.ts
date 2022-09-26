@@ -11,6 +11,11 @@ export const customFieldOptions: INodeProperties[] =  [
 		type: 'string',
 		default: '',
 		description: 'Endpoint',
+		displayOptions:{
+			show:{
+				resource:['v1ApiCustom']
+			}
+		},
 	},
 	{
 		displayName: 'Method',
@@ -40,6 +45,11 @@ export const customFieldOptions: INodeProperties[] =  [
 		],
 		default: 'post',
 		description: 'Method',
+		displayOptions:{
+			show:{
+				resource:['v1ApiCustom']
+			}
+		},
 	},
 	{
 		displayName: 'Object',
@@ -47,6 +57,11 @@ export const customFieldOptions: INodeProperties[] =  [
 		type: 'string',
 		default: '',
 		description: 'Object to Set',
+		displayOptions:{
+			show:{
+				resource:['v1ApiCustom']
+			}
+		},
 	},
 	{
 		displayName: 'Fields',

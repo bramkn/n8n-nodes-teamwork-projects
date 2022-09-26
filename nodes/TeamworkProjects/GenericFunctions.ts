@@ -87,8 +87,12 @@ export async function teamworkApiGetRequest(
 		const data = await teamworkProjectsApiRequest.call(this,'Get', endpoint, {}, qs);
 
 		qs['page'] += 1;
-
-		dataArray = [].concat(data[`${Object. keys(data)[0]}`]);
+		if(Object.keys(data)[0]!=='STATUS'){
+			dataArray = [].concat(data[`${Object.keys(data)[0]}`]);
+		}
+		else{
+			dataArray = [].concat(data[`${Object.keys(data)[1]}`]);
+		}
 
 		for (let dataIndex = 0; dataIndex < dataArray.length; dataIndex++) {
 			const newItem: INodeExecutionData = {

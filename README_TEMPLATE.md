@@ -1,18 +1,10 @@
-# n8n-nodes-_node-name_
+# n8n-nodes-teamwork-projects
 
-This is an n8n community node. It lets you use _app/service name_ in your n8n workflows.
+This is an n8n community node. It lets you use the teamwork projects API in your n8n workflows.
 
-_App/service name_ is _one or two sentences describing the service this node integrates with_.
+Teamwork projects is a project management application which allows you to easily manage your projects.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
-
-[Installation](#installation)  
-[Operations](#operations)  
-[Credentials](#credentials)  <!-- delete if no auth needed -->  
-[Compatibility](#compatibility)  
-[Usage](#usage)  <!-- delete if not using this section -->  
-[Resources](#resources)  
-[Version history](#version-history)  <!-- delete if not using this section -->  
 
 ## Installation
 
@@ -20,29 +12,30 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 ## Operations
 
-_List the operations supported by your node._
+The API docs were scraped to add all functionality of the v3 api.
+Some of the operations do not exist in the v3 api, for this the v1 api was added. 
+v1 is not configured, so endppoints and fields etc. need to be entered manually. This can also be done with the HTTP node but this simplifies it a little bit.
 
 ## Credentials
 
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
+With Teamwork you can easily authenticate with a personal API token. Everything you have access to will be accessible through the API.
 
 ## Compatibility
 
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
+This node was developed and tested with n8n version 0.194.0
 
 ## Usage
 
-_This is an optional section. Use it to help users with any difficult or confusing aspects of the node._
+The v3 API portion should be used for all operations except the ones that are not available in v3 yet. For these a custom v1 API call can be made.
 
-_By the time users are looking for community nodes, they probably already know n8n basics. But if you expect new users, you can link to the [Try it out](https://docs.n8n.io/try-it-out/) documentation to help them get started._
 
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-* _Link to app/service documentation._
+* [teamwork projects v1 API](https://apidocs.teamwork.com/docs/teamwork/47ba196e8ba20-teamwork-api-v1)
+* [teamwork projects v3 API](https://apidocs.teamwork.com/docs/teamwork/1686380931896-teamwork-api-v3)
 
 ## Version history
 
-_This is another optional section. If your node has multiple versions, include a short description of available versions and what changed, as well as any compatibility impact._
-
+v1. first version with basic functionality
 
