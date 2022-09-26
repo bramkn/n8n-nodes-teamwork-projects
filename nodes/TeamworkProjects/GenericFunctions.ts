@@ -1,36 +1,31 @@
 import {
-	IExecuteFunctions,
+	IExecuteFunctions
 } from 'n8n-core';
 
 import {
-	OptionsWithUri,
+	OptionsWithUri
 } from 'request';
 
 import {
 	IDataObject,
 	ILoadOptionsFunctions,
 	INodeExecutionData,
-	NodeApiError,
-	NodeOperationError,
+	NodeApiError
 } from 'n8n-workflow';
 
+import { set } from 'lodash';
+import defintions from "./definitionconfig.json";
+import endpoints from "./endpointconfig.json";
 import {
 	ArrayItemsObject,
 	BasicField,
-	BasicFilter,
-	CustomField,
-	configSchema,
-	EndpointConfig,
+	BasicFilter, configSchema, CustomField, EndpointConfig,
 	EndpointParameter,
 	LoadedResource,
 	optionsFromConfig,
 	Property,
-	TeamworkProjectsApiCredentials,
+	TeamworkProjectsApiCredentials
 } from './types';
-import { listenerCount } from 'process';
-import { get, pick , set, unset } from 'lodash';
-import defintions from "./definitionconfig.json";
-import endpoints from "./endpointconfig.json";
 
 
 
