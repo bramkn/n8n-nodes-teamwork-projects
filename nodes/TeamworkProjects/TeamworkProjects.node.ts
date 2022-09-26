@@ -11,7 +11,7 @@ import { customFieldOptions } from './CustomFieldDescription';
 import { fieldOptions } from './FieldDescription';
 import { filterOptions } from './FilterDescription';
 import { arrayToOptions, getBody, getCustomBody, getEndPointCategories, getEndpointConfig, getEndpointFieldOptions, getEndpointFilterOptions, getEndPointOperations, getEndPoints, getQueryFilters, teamworkApiGetRequest, teamworkApiRequest, teamworkProjectsApiRequest } from './GenericFunctions';
-import { EndpointConfig, EndpointParameter, LoadedResource, optionsFromConfig, TeamworkProjectsApiCredentials } from './types';
+import { EndpointConfig, EndpointParameter, LoadedResource, OptionsFromConfig, TeamworkProjectsApiCredentials } from './types';
 
 export class TeamworkProjects implements INodeType {
 	description: INodeTypeDescription = {
@@ -105,7 +105,7 @@ export class TeamworkProjects implements INodeType {
 				const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
 				const fields = await getEndpointFieldOptions(endpointConfig);
 
-				return fields as optionsFromConfig[];
+				return fields as OptionsFromConfig[];
 			},
 		},
 	};

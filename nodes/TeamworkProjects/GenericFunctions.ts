@@ -1,31 +1,36 @@
 import {
-	IExecuteFunctions
+	IExecuteFunctions,
 } from 'n8n-core';
 
 import {
-	OptionsWithUri
+	OptionsWithUri,
 } from 'request';
 
 import {
 	IDataObject,
 	ILoadOptionsFunctions,
 	INodeExecutionData,
-	NodeApiError
+	NodeApiError,
+	NodeOperationError,
 } from 'n8n-workflow';
 
-import { set } from 'lodash';
-import defintions from "./definitionconfig.json";
-import endpoints from "./endpointconfig.json";
 import {
 	ArrayItemsObject,
 	BasicField,
-	BasicFilter, configSchema, CustomField, EndpointConfig,
+	BasicFilter,
+	ConfigSchema,
+	CustomField,
+	EndpointConfig,
 	EndpointParameter,
 	LoadedResource,
-	optionsFromConfig,
+	OptionsFromConfig,
 	Property,
-	TeamworkProjectsApiCredentials
+	TeamworkProjectsApiCredentials,
 } from './types';
+import { listenerCount } from 'process';
+import { get, pick , set, unset } from 'lodash';
+import defintions from "./definitionconfig.json";
+import endpoints from "./endpointconfig.json";
 
 
 
@@ -141,19 +146,19 @@ export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
 	&& x.name !=='page'
 	&& x.name !=='pageSize'
 	&& x.name !=='orderMode'
-	&& x.name !=='orderBy').map((item)=>({"name":item.description ?? item.name,"value":item.name,"description":item.enum ? "<p> possible options: " + item.enum + "<p>":null})) as optionsFromConfig[];
+	&& x.name !=='orderBy').map((item)=>({"name":item.description ?? item.name,"value":item.name,"description":item.enum ? "<p> possible options: " + item.enum + "<p>":null})) as OptionsFromConfig[];
 }
 
 export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 	const bodyFields = endpointConfig.parameters.filter(x=> x.in ==='body');
-	const array:optionsFromConfig[] =[];
+	const array:OptionsFromConfig[] =[];
 	for(let index =0; index < bodyFields.length; index++){
 		const field = bodyFields[index];
 		if(field.schema !== undefined){
-			const schema = field.schema as configSchema;
+			const schema = field.schema as ConfigSchema;
 			const fieldDef = await getDefinitionPropertiesFromEndpoint(schema.$ref);
 			if(fieldDef !== undefined){
-				const properties:optionsFromConfig[] = (await getDefinitionArray(fieldDef?.properties)).map((item)=>({"name":item.fieldName,"value":item.fieldName}));
+				const properties:OptionsFromConfig[] = (await getDefinitionArray(fieldDef?.properties)).map((item)=>({"name":item.fieldName,"value":item.fieldName}));
 				array.push.apply(array,properties);
 			}
 		}else{
@@ -170,7 +175,7 @@ export async function getEndpointFieldProperties(endpointConfig:EndpointConfig){
 	for(let index =0; index < bodyFields.length; index++){
 		const field = bodyFields[index];
 		if(field.schema !== undefined){
-			const schema = field.schema as configSchema;
+			const schema = field.schema as ConfigSchema;
 			const fieldDef = await getDefinitionPropertiesFromEndpoint(schema.$ref);
 			if(fieldDef !== undefined){
 				const properties:Property[] = (await getDefinitionArray(fieldDef?.properties));

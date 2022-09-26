@@ -8,13 +8,13 @@ export type LoadedResource = {
 	id: number;
 	name: string;
 }
-export type optionsFromConfig ={
+export type OptionsFromConfig ={
 	name:string,
 	value:string,
 	description?:string
 }
 
-export type configSchema ={
+export type ConfigSchema ={
 	$ref:string
 }
 
