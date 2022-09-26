@@ -20,6 +20,8 @@ v1 is not configured, so endppoints and fields etc. need to be entered manually.
 
 With Teamwork you can easily authenticate with a personal API token. Everything you have access to will be accessible through the API.
 
+![apiToken](https://github.com/bramkn/n8n-nodes-teamwork-projects/blob/master/images/apiToken.png)
+
 ## Compatibility
 
 This node was developed and tested with n8n version 0.194.0
