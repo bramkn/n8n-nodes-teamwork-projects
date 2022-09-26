@@ -18,8 +18,8 @@ export const filterOptions: INodeProperties[] =  [
 		default: {},
 		displayOptions:{
 			hide:{
-				resource:['v1ApiCustom']
-			}
+				resource:['v1ApiCustom'],
+			},
 		},
 		options: [
 			{

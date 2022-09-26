@@ -18,8 +18,8 @@ export const fieldOptions: INodeProperties[] =  [
 		default: {},
 		displayOptions:{
 			hide:{
-				resource:['v1ApiCustom']
-			}
+				resource:['v1ApiCustom'],
+			},
 		},
 		options: [
 			{

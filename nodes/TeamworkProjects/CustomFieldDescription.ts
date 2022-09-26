@@ -13,8 +13,8 @@ export const customFieldOptions: INodeProperties[] =  [
 		description: 'Endpoint',
 		displayOptions:{
 			show:{
-				resource:['v1ApiCustom']
-			}
+				resource:['v1ApiCustom'],
+			},
 		},
 	},
 	{
@@ -47,8 +47,8 @@ export const customFieldOptions: INodeProperties[] =  [
 		description: 'Method',
 		displayOptions:{
 			show:{
-				resource:['v1ApiCustom']
-			}
+				resource:['v1ApiCustom'],
+			},
 		},
 	},
 	{
@@ -59,8 +59,8 @@ export const customFieldOptions: INodeProperties[] =  [
 		description: 'Object to Set',
 		displayOptions:{
 			show:{
-				resource:['v1ApiCustom']
-			}
+				resource:['v1ApiCustom'],
+			},
 		},
 	},
 	{
@@ -76,8 +76,8 @@ export const customFieldOptions: INodeProperties[] =  [
 		default: {},
 		displayOptions:{
 			show:{
-				resource:['v1ApiCustom']
-			}
+				resource:['v1ApiCustom'],
+			},
 		},
 		options: [
 			{

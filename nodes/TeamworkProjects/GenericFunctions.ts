@@ -17,8 +17,8 @@ import {
 import {
 	ArrayItemsObject,
 	BasicField,
-	CustomField,
 	BasicFilter,
+	CustomField,
 	configSchema,
 	EndpointConfig,
 	EndpointParameter,
@@ -66,7 +66,7 @@ export async function teamworkProjectsApiRequest(
 	}
 	try {
 		return await this.helpers.request!(options);
-	} catch (error:any) {
+	} catch (error) {
 		throw new NodeApiError(this.getNode(), error);
 	}
 }
@@ -152,7 +152,7 @@ export async function getEndpointFilterOptions(endpointConfig:EndpointConfig){
 export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 	const bodyFields = endpointConfig.parameters.filter(x=> x.in ==='body');
 	const array:optionsFromConfig[] =[];
-	for(var index =0; index < bodyFields.length; index++){
+	for(let index =0; index < bodyFields.length; index++){
 		const field = bodyFields[index];
 		if(field.schema !== undefined){
 			const schema = field.schema as configSchema;
@@ -162,7 +162,7 @@ export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 				array.push.apply(array,properties);
 			}
 		}else{
-			array.push({"name":field.description ?? field.name,"value":field.name,"description":field.enum ? "<p> possible options: " + field.enum + "<p>":undefined})
+			array.push({"name":field.description ?? field.name,"value":field.name,"description":field.enum ? "<p> possible options: " + field.enum + "<p>":undefined});
 		}
 
 	}
@@ -172,7 +172,7 @@ export async function getEndpointFieldOptions(endpointConfig:EndpointConfig){
 export async function getEndpointFieldProperties(endpointConfig:EndpointConfig){
 	const bodyFields = endpointConfig.parameters.filter(x=> x.in ==='body');
 	const array:Property[] =[];
-	for(var index =0; index < bodyFields.length; index++){
+	for(let index =0; index < bodyFields.length; index++){
 		const field = bodyFields[index];
 		if(field.schema !== undefined){
 			const schema = field.schema as configSchema;
@@ -188,17 +188,17 @@ export async function getEndpointFieldProperties(endpointConfig:EndpointConfig){
 				fieldType = items.type;
 			}
 			else{
-				fieldType = field.type
+				fieldType = field.type;
 			}
 
 			array.push(
-			  {
+				{
 					"fieldName": field.name,
 					"isArray": field.type === 'array',
 					"objectDef": "",
-					"fieldType": fieldType
-				}
-			)
+					"fieldType": fieldType,
+				},
+			);
 		}
 
 	}
@@ -213,11 +213,11 @@ export async function getEndPoints(){
 export async function getQueryFilters(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	parameters:EndpointParameter[],
-	itemIndex:number
+	itemIndex:number,
 ){
 	const qs:IDataObject = {};
 	const filters = await this.getNodeParameter('parameters.basicFilter', itemIndex, []) as BasicFilter[];
-	for(var index = 0; index<filters.length; index++){
+	for(let index = 0; index<filters.length; index++){
 		const filterConfig = parameters.find(x => x.name === filters[index].field);
 		if(filterConfig?.type ==='boolean'){
 			qs[filters[index].field] = filters[index].value.toLocaleLowerCase() === 'true';
@@ -226,18 +226,18 @@ export async function getQueryFilters(
 			qs[filters[index].field] = filters[index].value;
 		}
 	}
-	return qs
+	return qs;
 }
 
 export async function getBody(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	endpointConfig:EndpointConfig,
-	itemIndex:number
+	itemIndex:number,
 ){
 	const fieldProperties = await getEndpointFieldProperties(endpointConfig);
 	const body:IDataObject = {};
 	const fields = await this.getNodeParameter('fields.basicFields', itemIndex, []) as BasicField[];
-	for(var index = 0;index<fields.length;index++){
+	for(let index = 0;index<fields.length;index++){
 		const field = fields[index];
 		const fieldType = fieldProperties.find(x=>x.fieldName===field.field)?.fieldType ?? 'string';
 		let fieldValue;
@@ -248,7 +248,7 @@ export async function getBody(
 			fieldValue = +field.value;
 		}
 		else{
-			fieldValue = field.value
+			fieldValue = field.value;
 		}
 		set(body,field.field,fieldValue);
 		//body[field.field] = field.value;
@@ -260,11 +260,11 @@ export async function getBody(
 export async function getCustomBody(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	object:string,
-	itemIndex:number
+	itemIndex:number,
 ){
 	const body:IDataObject = {};
 	const fields = await this.getNodeParameter('customFields.basicFields', itemIndex, []) as CustomField[];
-	for(var index = 0;index<fields.length;index++){
+	for(let index = 0;index<fields.length;index++){
 		const field = fields[index];
 		const fieldType = field.type;
 
@@ -276,7 +276,7 @@ export async function getCustomBody(
 			fieldValue = +field.value;
 		}
 		else{
-			fieldValue = field.value
+			fieldValue = field.value;
 		}
 		set(body,object+'.'+field.field,fieldValue);
 
@@ -289,7 +289,7 @@ export async function getCustomBody(
 export async function getDefinitionArray(properties:Property[]){
 	const array:Property[] = [];
 	if(properties !== undefined){
-		for(var index= 0; index < properties.length; index++){
+		for(let index= 0; index < properties.length; index++){
 			const property = properties[index];
 			if(property.objectDef===""){
 				array.push(property);
@@ -304,8 +304,8 @@ export async function getDefinitionArray(properties:Property[]){
 						"fieldName": property.fieldName,
 						"isArray":false,
 						"objectDef":"",
-						"fieldType":"string"
-					}])
+						"fieldType":"string",
+					}]);
 				}
 
 			}
@@ -316,7 +316,7 @@ export async function getDefinitionArray(properties:Property[]){
 
 export async function getDefinitionPropertiesFromDef(
 	defObject:string,
-	defObjectName:string
+	defObjectName:string,
 ){
 	const defName = defObject.split('/')[defObject.split('/').length-1];
 	const definition = defintions.find(x=>x.name===defName);
@@ -324,12 +324,12 @@ export async function getDefinitionPropertiesFromDef(
 		"fieldName":defObjectName+'.'+item.fieldName,
 		"isArray":item.isArray,
 		"objectDef":item.objectDef,
-		"fieldType":item.fieldType
+		"fieldType":item.fieldType,
 	})) as Property[];
 }
 
 export async function getDefinitionPropertiesFromEndpoint(
-	defObject:string
+	defObject:string,
 ){
 	const defName = defObject.split('/')[defObject.split('/').length-1];
 	const definition = defintions.find(x=>x.name===defName);
@@ -337,7 +337,7 @@ export async function getDefinitionPropertiesFromEndpoint(
 }
 
 export const toOptions = (items: LoadedResource[]) =>
-	items.map(({ name, id }) => ({ name: name, value: id }));
+	items.map(({ name, id }) => ({ name, value: id }));
 
 export const arrayToOptions = (items: string[]) =>
-	items.map((name) => ({ name: name, value: name }));
+	items.map((name) => ({ name, value: name }));

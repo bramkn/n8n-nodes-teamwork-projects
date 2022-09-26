@@ -112,7 +112,6 @@ export class TeamworkProjects implements INodeType {
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-		let item: INodeExecutionData;
 		const returnItems: INodeExecutionData[] = [];
 
 		const resource = await this.getNodeParameter('resource', 0, '') as string;
@@ -162,7 +161,7 @@ export class TeamworkProjects implements INodeType {
 		else{
 			const endpointConfig:EndpointConfig = await getEndpointConfig(resource,operation);
 			let endpoint = endpointConfig.endpoint;
-			let endpointId = endpointConfig.parameters.find(x => x.in ==='path')?.name as string ?? '';
+			const endpointId = endpointConfig.parameters.find(x => x.in ==='path')?.name as string ?? '';
 
 			for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 				try {
