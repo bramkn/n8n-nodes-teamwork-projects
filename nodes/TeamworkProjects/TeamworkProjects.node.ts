@@ -36,19 +36,22 @@ export class TeamworkProjects implements INodeType {
 			// Node properties which the user gets displayed and
 			// can change on the node.
 			{
-				displayName: 'Resource',
+				displayName: 'Resource Name or ID',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				default: '',
 				typeOptions: {
 					loadOptionsMethod: 'getResources',
 				},
-				description: 'Teamwork Projects resource',
+				description: 'Teamwork Projects resource. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Operation',
+				displayName: 'Operation Name or ID',
 				name: 'operation',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+				noDataExpression: true,
 				default: '',
 				typeOptions: {
 					loadOptionsDependsOn:['resource'],
@@ -59,10 +62,9 @@ export class TeamworkProjects implements INodeType {
 						resource:['v1ApiCustom'],
 					},
 				},
-				description: 'Operation to perform',
 			},
 			{
-				displayName: 'Id',
+				displayName: 'ID',
 				name: 'id',
 				type: 'string',
 				default: '',
@@ -71,7 +73,7 @@ export class TeamworkProjects implements INodeType {
 						resource:['v1ApiCustom'],
 					},
 				},
-				description: 'When performing an operation on a specific record, this Id needs to be entered with the Id for the record of that resource',
+				description: 'When performing an operation on a specific record, this ID needs to be entered with the ID for the record of that resource',
 			},
 			...filterOptions,
 			...fieldOptions,

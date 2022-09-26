@@ -1,19 +1,15 @@
 
-import {
-	INodeProperties,
-} from 'n8n-workflow';
+import { INodeProperties } from 'n8n-workflow';
 
-
-export const customFieldOptions: INodeProperties[] =  [
+export const customFieldOptions: INodeProperties[] = [
 	{
 		displayName: 'Endpoint',
 		name: 'endpoint',
 		type: 'string',
 		default: '',
-		description: 'Endpoint',
-		displayOptions:{
-			show:{
-				resource:['v1ApiCustom'],
+		displayOptions: {
+			show: {
+				resource: ['v1ApiCustom'],
 			},
 		},
 	},
@@ -21,33 +17,32 @@ export const customFieldOptions: INodeProperties[] =  [
 		displayName: 'Method',
 		name: 'method',
 		type: 'options',
-		options:[
+		options: [
 			{
-				name:'get',
-				value:'get',
+				name: 'Delete',
+				value: 'delete',
 			},
 			{
-				name:'post',
-				value:'post',
+				name: 'Get',
+				value: 'get',
 			},
 			{
-				name:'patch',
-				value:'patch',
+				name: 'Patch',
+				value: 'patch',
 			},
 			{
-				name:'put',
-				value:'put',
+				name: 'Post',
+				value: 'post',
 			},
 			{
-				name:'delete',
-				value:'delete',
+				name: 'Put',
+				value: 'put',
 			},
 		],
 		default: 'post',
-		description: 'Method',
-		displayOptions:{
-			show:{
-				resource:['v1ApiCustom'],
+		displayOptions: {
+			show: {
+				resource: ['v1ApiCustom'],
 			},
 		},
 	},
@@ -57,9 +52,9 @@ export const customFieldOptions: INodeProperties[] =  [
 		type: 'string',
 		default: '',
 		description: 'Object to Set',
-		displayOptions:{
-			show:{
-				resource:['v1ApiCustom'],
+		displayOptions: {
+			show: {
+				resource: ['v1ApiCustom'],
 			},
 		},
 	},
@@ -74,9 +69,9 @@ export const customFieldOptions: INodeProperties[] =  [
 		},
 		description: 'Field to add',
 		default: {},
-		displayOptions:{
-			show:{
-				resource:['v1ApiCustom'],
+		displayOptions: {
+			show: {
+				resource: ['v1ApiCustom'],
 			},
 		},
 		options: [
@@ -89,27 +84,27 @@ export const customFieldOptions: INodeProperties[] =  [
 						name: 'field',
 						type: 'string',
 						default: '',
-						description: 'Field to assign a value to.',
+						description: 'Field to assign a value to',
 					},
 					{
 						displayName: 'Type',
 						name: 'type',
 						type: 'options',
-						options:[
+						options: [
 							{
-								name:'string',
-								value:'string',
+								name: 'String',
+								value: 'string',
 							},
 							{
-								name:'boolean',
-								value:'boolean',
+								name: 'Boolean',
+								value: 'boolean',
 							},
 							{
-								name:'integer',
-								value:'integer',
+								name: 'Integer',
+								value: 'integer',
 							},
 						],
-						default: '',
+						default: 'string',
 						description: 'Value type',
 					},
 					{
@@ -123,4 +118,4 @@ export const customFieldOptions: INodeProperties[] =  [
 			},
 		],
 	},
-	];
+];

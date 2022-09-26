@@ -27,7 +27,7 @@ export const filterOptions: INodeProperties[] =  [
 				displayName: 'Basic Filter',
 				values: [
 					{
-						displayName: 'Filter',
+						displayName: 'Filter Name or ID',
 						name: 'field',
 						type: 'options',
 						typeOptions: {
